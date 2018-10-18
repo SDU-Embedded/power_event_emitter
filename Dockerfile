@@ -6,5 +6,6 @@ RUN cd /gst-build/subprojects/gst-plugins-bad/ && \
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
   kafkacat
 COPY files/ /
+RUN rm -r /gst-build
 CMD ["/Services/power_event_emitter/service/do_run"]
 
