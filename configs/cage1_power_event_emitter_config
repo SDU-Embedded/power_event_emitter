@@ -1,0 +1,9 @@
+export _cage=1
+export _type=power
+export _group=ff15::11
+export _interface=eth0
+export _port=5001
+export _caps='application/x-rtp, media=audio, clock-rate=48000, encoding-name=L16, encoding-params=1, payload=96, format=S16BE, rate=48000, channels=1, layout=interleaved'
+export GST_VAAPI_ALL_DRIVERS=1
+export GST_GL_WINDOW=gbm
+
