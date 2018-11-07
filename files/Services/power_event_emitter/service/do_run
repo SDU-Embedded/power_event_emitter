@@ -4,4 +4,6 @@
 source configs/default_config
 source /cage1_power_event_emitter_config
 
-exec /Services/power_event_emitter/bin/power_event_emitter
+exec $_entrypoint
+#exec /Services/power_event_emitter/bin/power_event_emitter
+
