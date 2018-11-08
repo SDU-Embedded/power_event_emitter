@@ -7,5 +7,5 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
   kafkacat
 COPY files/ /
 RUN rm -r /gst-build
-CMD ["/Services/power_event_emitter/service/do_run"]
+CMD ["/scripts/do_run"]
 

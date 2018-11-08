@@ -1,4 +1,0 @@
-#!/bin/bash
-
-gst-launch-1.0 -q udpsrc multicast-group=$_group multicast-iface=$_interface port=$_port auto-multicast=true ! $_caps ! rtpL16depay ! audioconvert ! powereventemitter ! fdsink | stdbuf -o0 tr -d '\000' | /Services/power_event_emitter/bin/event_parser.py $_cage $_type | kafkacat -b Kafka01,Kafka02 -t power_event_emitter
-
