@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_files=$(find "/" -type f -iname "*_config" | sort)
+_files=$(find "/" -maxdepth 1 -type f -iname "*_config" | sort)
 
 if [ -z "$_files" ]
 then
