@@ -7,6 +7,8 @@ event = dict()
 last_onset_event = dict()
 event["cage"] = int(sys.argv[1])
 event["type"] = str(sys.argv[2])
+event["timestamp"] = datetime.now()
+last_onset_event["timestamp"] = datetime.now()
 
 def get_time_since_last_event():
     current_time = datetime.now()
@@ -15,7 +17,7 @@ def get_time_since_last_event():
 
 def emit_event():
     tmp = copy.deepcopy(event)
-    tmp['timestamp'] = event['timestamp'].isoformat()
+    tmp["timestamp"] = event["timestamp"].isoformat()
     print json.dumps(tmp)
 
 try:

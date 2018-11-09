@@ -1,5 +1,6 @@
 FROM leonbondelarsen/sdu_gstreamer
 RUN cd /gst-build/subprojects/gst-plugins-bad/ && \
+  git fetch && \
   git checkout leon_new_plugin && \
   cd /gst-build && \
   ninja -C build/ install
