@@ -5,7 +5,8 @@ RUN cd /gst-build/subprojects/gst-plugins-bad/ && \
   cd /gst-build && \
   ninja -C build/ install
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  kafkacat
+  kafkacat \
+  tee
 COPY files/ /
 RUN rm -r /gst-build
 CMD ["/scripts/do_run"]
