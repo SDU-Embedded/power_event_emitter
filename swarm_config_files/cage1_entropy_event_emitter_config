@@ -6,6 +6,6 @@ export _port=5004
 export _caps='application/x-rtp, media=audio, clock-rate=48000, encoding-name=L16, encoding-params=1, payload=96, format=S16BE, rate=48000, channels=2, layout=interleaved'
 export GST_VAAPI_ALL_DRIVERS=1
 export GST_GL_WINDOW=gbm
-export _entrypoint="gst-launch-1.0 -q udpsrc multicast-group=$_group multicast-iface=$_interface port=$_port auto-multicast=true ! $_caps ! rtpL16depay ! 'audio/x-raw, format=S16BE, layout=interleaved, rate=48000, channels=1' ! audioconvert ! entropyeventemitter threshold_low=17 threshold_high=42 start_min_value=100 ! fdsink | stdbuf -o0 tr -d '\000' | /scripts/event_parser.py $_cage $_type | tee kafkacat -b manna,hou,bisnap -t $_type"
+export _entrypoint="gst-launch-1.0 -q udpsrc multicast-group=$_group multicast-iface=$_interface port=$_port auto-multicast=true ! $_caps ! rtpL16depay ! 'audio/x-raw, format=S16BE, layout=interleaved, rate=48000, channels=1' ! audioconvert ! entropyeventemitter threshold_low=9 threshold_high=16 start_min_value=7 ! fdsink | stdbuf -o0 tr -d '\000' | /scripts/event_parser.py $_cage $_type | tee >(kafkacat -P -b manna,hou,bisnap -t $_type)"
 
 

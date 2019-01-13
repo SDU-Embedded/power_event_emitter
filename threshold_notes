@@ -1,0 +1,16 @@
+female 
+   power max 89
+   onset above 23 = 25.8% = 26
+   offset below 21 = 23.6% = 23
+
+
+
+male 
+  power max 130 = 130
+  onset above 25 = 19.2% = 20
+  offset below 20 = 15.4% = 15
+
+  entropy min = 6.56 = 7
+  onset below 60 = 9.14 = 9
+  offset above 100 = 15.24 = 16
+

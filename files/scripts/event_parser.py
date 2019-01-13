@@ -5,15 +5,15 @@ from datetime import datetime
 
 event = dict()
 contents = dict()
-contents["cage"] = int(sys.argv[1])
+contents["bird"] = int(sys.argv[1])
 contents["type"] = str(sys.argv[2])
 contents["duration"] = 0.0
 event["data"] = contents
-event["@timestamp"] = datetime.now()
+event["@timestamp"] = datetime.utcnow()
 last_onset_event = copy.deepcopy(event)
 
 def get_time_since_last_event():
-    current_time = datetime.now()
+    current_time = datetime.utcnow()
     previous_time = event["@timestamp"]
     return (current_time - previous_time).total_seconds()
 
@@ -26,11 +26,11 @@ try:
     while True:
         line = sys.stdin.readline().rstrip()
         if 'onset' in line:
-            event["@timestamp"] = datetime.now()
+            event["@timestamp"] = datetime.utcnow()
             event["data"]["event"] = line
             event["data"]["duration"] = 0.0
-            sha_command = "echo \"" + str(event) + "\" | sha1sum | cut -d' ' -f1"
-            event["hash"] = os.popen(sha_command).read().rstrip()
+            #sha_command = "echo \"" + str(event) + "\" | sha1sum | cut -d' ' -f1"
+            #event["hash"] = os.popen(sha_command).read().rstrip()
             last_onset_event = copy.deepcopy(event)
             emit_event()
         else:
