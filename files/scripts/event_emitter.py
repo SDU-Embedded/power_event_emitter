@@ -58,8 +58,6 @@ class Thresholder():
         self.size = 10
         self.values = [5.0]*self.size
         self.pointer = 0
-        self.max_average = 0.0
-        self.min_average = 5.0
         self.upwards_threshold_percent = float(sys.argv[3]) # 30.0
         self.downwards_threshold_percent = float(sys.argv[4]) # 20.0
         self.upwards_threshold = 0.0
@@ -67,9 +65,28 @@ class Thresholder():
         self.on = False
         self.event_parser = EventParser()
 
+        self.parameters = dict()
+
+        self.parameter_file = 'parameters.json'
+    
+        try:
+            with open(self.parameter_file) as myfile:
+                self.parameters = json.loads( list(myfile)[-1] )
+        except:
+            self.parameters['time'] = datetime.utcnow()
+            self.parameters['max'] = 0.0
+            self.parameters['min'] = 5.0
+            file_handle = open(self.parameter_file)
+            file_handle.write( json.dumps(self.parameters) + '\n')
+            file_handle.close()
+
     def evaluate_thresholds(self,average):
-        self.upwards_threshold = ((average - self.min_average)*self.upwards_threshold_percent/100.0)+self.min_average
-        self.downwards_threshold = ((average - self.min_average)*self.downwards_threshold_percent/100.0)+self.min_average
+        self.upwards_threshold = ((average - self.parameters['min'])*self.upwards_threshold_percent/100.0)+self.parameters['min']
+        self.downwards_threshold = ((average - self.parameters['min'])*self.downwards_threshold_percent/100.0)+self.parameters['min']
+        parameters['time'] = datetime.utcnow()
+        file_handle = open(self.parameter_file)
+        file_handle.write( json.dumps(self.parameters) + '\n')
+        file_handle.close()
 
     def evaluate(self, value):
         self.values[self.pointer] = float(value)
@@ -81,12 +98,12 @@ class Thresholder():
         average = sum(self.values)/self.size
         #print (average)
 
-        if average > self.max_average:
-            self.max_average = average
+        if average > self.parameters['max']:
+            self.parameters['max'] = average
             self.evaluate_thresholds(average)
             #print ("  New max:" + str(average) + " Up:" + str(self.upwards_threshold) + " Down:" + str(self.downwards_threshold))
-        if average < self.min_average:
-            self.min_average = average
+        if average < self.parameters['min']:
+            self.parameters['min'] = average
             self.evaluate_thresholds(average)
             #print ("  New min:" + str(average) + " Up:" + str(self.upwards_threshold) + " Down:" + str(self.downwards_threshold))
 
