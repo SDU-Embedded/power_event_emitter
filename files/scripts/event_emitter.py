@@ -68,23 +68,23 @@ class Thresholder():
         self.parameters = dict()
 
         self.parameter_file = 'parameters.json'
-    
+
         try:
             with open(self.parameter_file) as myfile:
                 self.parameters = json.loads( list(myfile)[-1] )
         except:
-            self.parameters['time'] = datetime.utcnow()
+            self.parameters['time'] = datetime.utcnow().isoformat()
             self.parameters['max'] = 0.0
             self.parameters['min'] = 5.0
-            file_handle = open(self.parameter_file)
+            file_handle = open(self.parameter_file, "w")
             file_handle.write( json.dumps(self.parameters) + '\n')
             file_handle.close()
 
     def evaluate_thresholds(self,average):
         self.upwards_threshold = ((average - self.parameters['min'])*self.upwards_threshold_percent/100.0)+self.parameters['min']
         self.downwards_threshold = ((average - self.parameters['min'])*self.downwards_threshold_percent/100.0)+self.parameters['min']
-        parameters['time'] = datetime.utcnow()
-        file_handle = open(self.parameter_file)
+        self.parameters['time'] = datetime.utcnow().isoformat()
+        file_handle = open(self.parameter_file, "a")
         file_handle.write( json.dumps(self.parameters) + '\n')
         file_handle.close()
 
@@ -129,7 +129,7 @@ class Thresholder():
                     self.on = True
                     #print ("  Onset event")
                     self.event_parser.evaluate('onset')
-            
+
 if __name__ == "__main__":
     thresholder = Thresholder()
 
@@ -142,4 +142,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         sys.stdout.flush()
         pass
+
 
