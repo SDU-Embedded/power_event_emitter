@@ -75,7 +75,7 @@ class Thresholder():
         except:
             self.parameters['time'] = datetime.utcnow().isoformat()
             self.parameters['max'] = 0.0
-            self.parameters['min'] = 5.0
+            self.parameters['min'] = 100.0
             file_handle = open(self.parameter_file, "w")
             file_handle.write( json.dumps(self.parameters) + '\n')
             file_handle.close()
