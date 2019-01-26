@@ -72,8 +72,6 @@ class Thresholder():
 
         # Other class variables
         self.event_on_high = True # TODO: make argv parameter
-        self.upwards_threshold = 0.0
-        self.downwards_threshold = 0.0
 
     def read_parameters(self):
         try:
@@ -84,8 +82,8 @@ class Thresholder():
             self.parameters['time'] = datetime.utcnow().isoformat()
             self.parameters['max'] = 0.0
             self.parameters['min'] = 100.0
-            self.parameters['upwards_th_percent'] = float(sys.argv[3]) # 30.0
-            self.parameters['downwards_th_percent'] = float(sys.argv[4]) # 20.0
+            self.parameters['upwards_threshold'] = float(sys.argv[3])
+            self.parameters['downwards_threshold'] = float(sys.argv[4])
             self.parameters['filter_size'] = 10
             file_handle = open(self.parameter_file, "w")
             file_handle.write( json.dumps(self.parameters) + '\n')
@@ -93,17 +91,13 @@ class Thresholder():
 
     def write_parameters(self):
         try:
+            self.parameters['time'] = datetime.utcnow().isoformat()
             file_handle = open(self.parameter_file, "a")
             file_handle.write( json.dumps(self.parameters) + '\n')
             file_handle.close()
         except:
             pass
 
-    def evaluate_thresholds(self,average):
-        self.upwards_threshold = ((average - self.parameters['min'])*self.parameters['upwards_th_percent']/100.0)+self.parameters['min']
-        self.downwards_threshold = ((average - self.parameters['min'])*self.parameters['downwards_th_percent']/100.0)+self.parameters['min']
-        self.parameters['time'] = datetime.utcnow().isoformat()
-        self.write_parameters()
 
     def evaluate(self, value):
     # Called for each line received
@@ -123,35 +117,35 @@ class Thresholder():
         # Keep track of the maximum value so far
         if average > self.parameters['max']:
             self.parameters['max'] = average
-            self.evaluate_thresholds(average)
-            #print ("  New max:" + str(average) + " Up:" + str(self.upwards_threshold) + " Down:" + str(self.downwards_threshold))
+            self.write_parameters()
+            #print ("  New max:" + str(average) + " Up:" + str(self.parameters['upwards_threshold']) + " Down:" + str(self.parameters['downwards_threshold']))
         
         # Keep track of the minimum value so far
         if average < self.parameters['min']:
             self.parameters['min'] = average
-            self.evaluate_thresholds(average)
-            #print ("  New min:" + str(average) + " Up:" + str(self.upwards_threshold) + " Down:" + str(self.downwards_threshold))
+            self.write_parameters()
+            #print ("  New min:" + str(average) + " Up:" + str(self.parameters['upwards_threshold']) + " Down:" + str(self.parameters['downwards_threshold']))
 
         # Evaluate state
         if self.event_on_high:
             if self.on:
-                if average < self.downwards_threshold:
+                if average < self.parameters['downwards_threshold']:
                     self.on = False
                     #print ("  Offset event")
                     self.event_parser.evaluate('offset')
             else:
-                if average > self.upwards_threshold:
+                if average > self.parameters['upwards_threshold']:
                     self.on = True
                     #print ("  Onset event")
                     self.event_parser.evaluate('onset')
         else:
             if self.on:
-                if average > self.upwards_threshold:
+                if average > self.parameters['upwards_threshold']:
                     self.on = False
                     #print ("  Offset event")
                     self.event_parser.evaluate('offset')
             else:
-                if average < self.downwards_threshold:
+                if average < self.parameters['downwards_threshold']:
                     self.on = True
                     #print ("  Onset event")
                     self.event_parser.evaluate('onset')
