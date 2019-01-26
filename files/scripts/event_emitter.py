@@ -68,7 +68,7 @@ class Thresholder():
         
         # Variables for filter 
         self.pointer = 0
-        self.values = [5.0]*self.parameters['filter_size']
+        self.values = [5.0]*100 # Max filter size is 100
 
         # Other class variables
         self.event_on_high = bool(sys.argv[5]) # TODO: make argv parameter
@@ -111,7 +111,7 @@ class Thresholder():
             self.pointer = 0
 
         # Calculate average of buffer
-        average = sum(self.values)/self.parameters['filter_size']
+        average = sum(self.values[0:self.parameters['filter_size']])/self.parameters['filter_size']
         #print (average)
 
         # Keep track of the maximum value so far
