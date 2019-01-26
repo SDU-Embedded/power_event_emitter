@@ -71,7 +71,7 @@ class Thresholder():
         self.values = [5.0]*self.parameters['filter_size']
 
         # Other class variables
-        self.event_on_high = True # TODO: make argv parameter
+        self.event_on_high = bool(sys.argv[5]) # TODO: make argv parameter
 
     def read_parameters(self):
         try:
