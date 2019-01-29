@@ -71,7 +71,6 @@ class Thresholder():
         self.values = [5.0]*100 # Max filter size is 100
 
         # Other class variables
-        self.event_on_high = bool(sys.argv[5]) # TODO: make argv parameter
 
     def read_parameters(self):
         try:
@@ -85,6 +84,7 @@ class Thresholder():
             self.parameters['upwards_threshold'] = float(sys.argv[3])
             self.parameters['downwards_threshold'] = float(sys.argv[4])
             self.parameters['filter_size'] = 10
+            self.parameters['event_on_high'] = bool(sys.argv[5])
             file_handle = open(self.parameter_file, "w")
             file_handle.write( json.dumps(self.parameters) + '\n')
             file_handle.close()
@@ -127,7 +127,7 @@ class Thresholder():
             #print ("  New min:" + str(average) + " Up:" + str(self.parameters['upwards_threshold']) + " Down:" + str(self.parameters['downwards_threshold']))
 
         # Evaluate state
-        if self.event_on_high:
+        if self.parameters['event_on_high']:
             if self.on:
                 if average < self.parameters['downwards_threshold']:
                     self.on = False
