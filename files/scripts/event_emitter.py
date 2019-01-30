@@ -10,7 +10,7 @@ class EventParser():
     def __init__(self):
         self.event = dict()
         self.contents = dict()
-        self.contents["bird"] = int(sys.argv[1])
+        self.contents["id"] = int(sys.argv[1])
         self.contents["type"] = str(sys.argv[2])
         self.contents["duration"] = 0.0
         self.event["data"] = self.contents
