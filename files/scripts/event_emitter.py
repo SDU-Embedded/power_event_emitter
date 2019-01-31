@@ -83,7 +83,7 @@ class Thresholder():
             self.parameters['min'] = 100.0
             self.parameters['upwards_threshold'] = float(sys.argv[3])
             self.parameters['downwards_threshold'] = float(sys.argv[4])
-            self.parameters['filter_size'] = 10
+            self.parameters['filter_size'] = int(sys.argv[6])
             self.parameters['event_on_high'] = bool(sys.argv[5])
             file_handle = open(self.parameter_file, "w")
             file_handle.write( json.dumps(self.parameters) + '\n')
