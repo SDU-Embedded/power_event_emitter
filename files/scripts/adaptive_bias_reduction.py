@@ -7,7 +7,7 @@ import sys
 class BiasFilter():
     # Saves samples in buffer of length 'buffer_size'
     # Calculates new average every 'estimate_freq' samples
-    def __init__(self, buffer_size, estimate_freq):
+    def __init__(self, buffer_size, estimate_freq, initial_bias):
        
         # Save variables
         self.buffer_size = buffer_size
@@ -15,7 +15,7 @@ class BiasFilter():
         
         self.values = [0.0]*self.buffer_size
         self.pointer = 0
-        self.bias = 0
+        self.bias = initial_bias
         self.sample_counter = 0
 
     def step(self, value):
@@ -38,7 +38,7 @@ class BiasFilter():
 
 
 if __name__ == "__main__":
-    filter = BiasFilter( int(sys.argv[1]), int(sys.argv[2]) )
+    filter = BiasFilter( int(sys.argv[1]),  int(sys.argv[2], int(sys.argv[3]) )
 
     try:
         while True:
