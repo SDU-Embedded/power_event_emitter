@@ -37,7 +37,8 @@ class EventParser():
             self.emit_event()
         else:
             duration = self.get_time_since_last_event()
-            self.event = copy.deepcopy(self.last_onset_event)
+            #self.event = copy.deepcopy(self.last_onset_event)
+            self.event["@timestamp"] = datetime.utcnow()
             self.event["data"]["event"] = dat
             self.event["data"]["duration"] = duration
             self.emit_event()
