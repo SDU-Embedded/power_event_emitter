@@ -5,6 +5,7 @@
 import os,time,sys,json,copy
 from datetime import datetime
 from kafka import KafkaProducer
+from distutils import util
 
 class EventParser():
     def __init__(self):
@@ -85,7 +86,7 @@ class Thresholder():
             self.parameters['upwards_threshold'] = float(sys.argv[3])
             self.parameters['downwards_threshold'] = float(sys.argv[4])
             self.parameters['filter_size'] = int(sys.argv[6])
-            self.parameters['event_on_high'] = bool(sys.argv[5])
+            self.parameters['event_on_high'] = bool(util.strtobool(sys.argv[5]))
             file_handle = open(self.parameter_file, "w")
             file_handle.write( json.dumps(self.parameters) + '\n')
             file_handle.close()
@@ -165,7 +166,10 @@ if __name__ == "__main__":
             line = sys.stdin.readline().rstrip()
             #print (line)
             if line:
-                thresholder.evaluate(float(line))
+                try:
+                    thresholder.evaluate(float(line))
+                except UnicodeEncodeError, ValueError
+                    pass
     except KeyboardInterrupt:
         sys.stdout.flush()
         pass

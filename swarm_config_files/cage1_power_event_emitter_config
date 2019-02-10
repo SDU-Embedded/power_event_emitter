@@ -1,15 +1,28 @@
-export _bird_id=1
-export _type=power
-export _upwards_threshold=20
-export _downwards_threshold=15
-export _number_of_bins=128
-export _filter_size=2
-export _event_on_high=True
-
+# Audio input settings
 export _group=ff15::11
 export _interface=enp55s9
 export _port=5004
 export _caps='application/x-rtp, media=audio, clock-rate=48000, encoding-name=L16, encoding-params=1, payload=96, format=S16BE, rate=48000, channels=2, layout=interleaved'
+
+# Audio filter settings
+export _mode="high-pass"
+export _cutoff=2000
+export _poles=4
+
+# Audio metric settings
+export _number_of_bins=128
+export _event_on_high="true"
+
+# Event output settings
+export _bird_id=1
+export _topic=power
+export _upwards_threshold=20
+export _downwards_threshold=15
+export _filter_size=2
+
+# Environment settings
 export GST_VAAPI_ALL_DRIVERS=1
 export GST_GL_WINDOW=gbm
-export _entrypoint="gst-launch-1.0 -q udpsrc multicast-group=$_group multicast-iface=$_interface port=$_port auto-multicast=true ! $_caps ! rtpL16depay ! 'audio/x-raw, format=S16BE, layout=interleaved, rate=48000, channels=1' ! audioconvert ! powereventemitter bins=$_number_of_bins ! fdsink | stdbuf -o0 tr -d '\000' | /scripts/event_emitter.py $_bird_id $_type $_upwards_threshold $_downwards_threshold $_event_on_high $_filter_size"
+
+# Entry point
+export _entrypoint="gst-launch-1.0 -q udpsrc multicast-group=$_group multicast-iface=$_interface port=$_port auto-multicast=true ! $_caps ! rtpL16depay ! 'audio/x-raw, format=S16BE, layout=interleaved, rate=48000, channels=1' ! audioconvert ! audiocheblimit mode=$_mode cutoff=$_cutoff poles=$_poles ! audioconvert ! powereventemitter bins=$_number_of_bins ! fdsink | stdbuf -o0 tr -d '\000' | /scripts/event_emitter.py $_bird_id $_topic $_upwards_threshold $_downwards_threshold $_event_on_high $_filter_size"
