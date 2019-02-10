@@ -168,7 +168,7 @@ if __name__ == "__main__":
             if line:
                 try:
                     thresholder.evaluate(float(line))
-                except UnicodeEncodeError, ValueError
+                except (UnicodeEncodeError, ValueError) as e:
                     pass
     except KeyboardInterrupt:
         sys.stdout.flush()
