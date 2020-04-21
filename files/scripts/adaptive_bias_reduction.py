@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 #
 
@@ -38,14 +38,15 @@ class BiasFilter():
 
 
 if __name__ == "__main__":
-    filter = BiasFilter( int(sys.argv[1]),  int(sys.argv[2], int(sys.argv[3]) )
+    filter = BiasFilter( int(sys.argv[1]),  int(sys.argv[2]), int(sys.argv[3]) )
 
     try:
         while True:
             line = sys.stdin.readline().rstrip()
-            #print (line)
+            
             if line:
-                print filter.step(float(line))
+            #    print (line)
+                print ( round( abs( filter.step( float(line) ) ), 2 ) )
     except KeyboardInterrupt:
         sys.stdout.flush()
         pass

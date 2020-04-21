@@ -1,6 +1,5 @@
 # Audio input settingd
 export _group=ff15::11
-export _interface=enp55s9
 export _port=5004
 export _caps='application/x-rtp, media=audio, clock-rate=48000, encoding-name=L16, encoding-params=1, payload=96, format=S16BE, rate=48000, channels=2, layout=interleaved'
 
@@ -15,7 +14,7 @@ export _event_on_high="false"
 
 # Event output settings
 export _bird_id=1
-export _topic=entropy
+export _topic="ats_entropy"
 export _upwards_threshold=150
 export _downwards_threshold=50
 export _filter_size=5

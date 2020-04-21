@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 #
 
@@ -51,7 +51,7 @@ class EventEmitter():
         self.producer = KafkaProducer(bootstrap_servers=self.servers)
 
     def send(self, dat):
-        print (dat)
+        #print (dat)
         self.producer.send(self.topic, dat.encode())
 
 class Thresholder():
@@ -166,10 +166,14 @@ if __name__ == "__main__":
             line = sys.stdin.readline().rstrip()
             #print (line)
             if line:
-                try:
-                    thresholder.evaluate(float(line))
-                except (UnicodeEncodeError, ValueError) as e:
-                    pass
+                print (line)
+                thresholder.evaluate(float(line))
+                
+                #try:
+                #    print (line)
+                #    sys.stdout.flush()
+                #except (UnicodeEncodeError, ValueError) as e:
+                #    pass
     except KeyboardInterrupt:
         sys.stdout.flush()
         pass
